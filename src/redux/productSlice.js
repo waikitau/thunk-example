@@ -16,7 +16,7 @@ export const loadProductData = createAsyncThunk(
       return thunkAPI.rejectWithValue("Product Id can't be empty.");
     try {
       const ret = await fetchProductByID(productId);
-      return ret;
+      return { id: productId, data: ret };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -36,12 +36,12 @@ const productSlice = createSlice({
       .addCase(loadProductData.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        state.productData = action.payload;
+        const { id, data } = action.payload;
+        state.productData[id] = data;
       })
       .addCase(loadProductData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        state.productData = {};
       });
   },
 });

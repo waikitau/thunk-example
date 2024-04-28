@@ -16,8 +16,11 @@ const Home = () => {
   const dispatch = useDispatch();
   const { productData, loading, error } = useSelector(selectProduct);
 
+  const loadProudctIfRequired = () => {
+    if (!productData[productId]) dispatch(loadProductData(productId));
+  };
   useEffect(() => {
-    dispatch(loadProductData(productId)); // Example game ID
+    loadProudctIfRequired();
   }, []);
 
   return (
@@ -27,17 +30,14 @@ const Home = () => {
       ) : error ? (
         <Text>Error: {error}</Text>
       ) : (
-        <Text>{productData.title}</Text>
+        <Text>Product: {productData[productId]?.title}</Text>
       )}
       <TextInput
         placeholder="input product id"
         value={productId}
         onChangeText={setProductId}
       />
-      <Button
-        title="Reload Product"
-        onPress={() => dispatch(loadProductData(productId))}
-      />
+      <Button title="Reload Product" onPress={loadProudctIfRequired} />
     </View>
   );
 };
