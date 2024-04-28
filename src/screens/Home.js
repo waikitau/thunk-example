@@ -27,7 +27,7 @@ const Home = () => {
       ) : error ? (
         <Text>Error: {error}</Text>
       ) : (
-        <Text>{productData.title}</Text>
+        <Text>{productData[productId]?.title}</Text>
       )}
       <TextInput
         placeholder="input product id"
